@@ -1,3 +1,4 @@
+"use client"
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 
@@ -25,6 +26,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { useRegister } from "../api/use-register";
 
 const formSchema = z.object({
   name: z.string().trim().min(1, "Please enter your name"),
@@ -33,6 +35,9 @@ const formSchema = z.object({
 });
 
 export const SignUpCard = () => {
+
+const {mutate} = useRegister()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -43,7 +48,7 @@ export const SignUpCard = () => {
   });
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log({ values });
+    mutate(values)
   };
 
   return (
